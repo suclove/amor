@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feliz Día de la Mujer 🌹</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --rose: #c8102e;
+    --deep: #6b0f1a;
+    --gold: #d4a853;
+    --cream: #fdf6ee;
+    --blush: #f5c6cb;
+    --dark: #1a0a0e;
+  }
+
+  body {
+    min-height: 100vh;
+    background: radial-gradient(ellipse at 60% 30%, #3d0a14 0%, #1a0408 50%, #0d0205 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    overflow: hidden;
+    position: relative;
+    cursor: default;
+  }
+
+  /* Petals */
+  .petal {
+    position: fixed;
+    top: -60px;
+    font-size: 1.4rem;
+    animation: fall linear forwards;
+    pointer-events: none;
+    z-index: 10;
+    opacity: 0;
+  }
+
+  @keyframes fall {
+    0%   { transform: translateY(0) rotate(0deg) scale(0.8); opacity: 1; }
+    80%  { opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg) scale(1.2); opacity: 0; }
+  }
+
+  /* Stars background */
+  .stars {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .star {
+    position: absolute;
+    background: var(--gold);
+    border-radius: 50%;
+    animation: twinkle ease-in-out infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.1; transform: scale(1); }
+    50%       { opacity: 0.8; transform: scale(1.3); }
+  }
+
+  /* Main card */
+  .card {
+    position: relative;
+    z-index: 5;
+    text-align: center;
+    padding: 3rem 2.5rem;
+    max-width: 480px;
+    width: 90vw;
+  }
+
+  /* Initial state */
+  .intro {
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .intro.hide {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.95);
+    pointer-events: none;
+  }
+
+  .date-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.35em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+    opacity: 0.85;
+  }
+
+  .gift-icon {
+    font-size: 5rem;
+    display: block;
+    margin-bottom: 1.5rem;
+    animation: float 3s ease-in-out infinite;
+    filter: drop-shadow(0 0 20px rgba(212,168,83,0.5));
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(-3deg); }
+    50%       { transform: translateY(-12px) rotate(3deg); }
+  }
+
+  .intro-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.4rem, 5vw, 2rem);
+    color: var(--cream);
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.4;
+    margin-bottom: 0.6rem;
+  }
+
+  .intro-sub {
+    font-size: 1rem;
+    color: var(--blush);
+    opacity: 0.75;
+    margin-bottom: 2.5rem;
+    font-style: italic;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 1rem 2.5rem;
+    background: linear-gradient(135deg, var(--rose), var(--deep));
+    color: var(--cream);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-style: italic;
+    letter-spacing: 0.05em;
+    border: 1.5px solid rgba(212,168,83,0.5);
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 0 30px rgba(200,16,46,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+    border-radius: 50px;
+  }
+
+  .btn:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 0 50px rgba(200,16,46,0.7), 0 10px 30px rgba(0,0,0,0.4);
+  }
+
+  .btn:active { transform: scale(0.97); }
+
+  /* Reveal state */
+  .reveal {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem 2rem;
+    opacity: 0;
+    transform: translateY(40px) scale(0.9);
+    pointer-events: none;
+    transition: opacity 1s ease 0.4s, transform 1s ease 0.4s;
+  }
+
+  .reveal.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+
+  .rose-big {
+    font-size: 4.5rem;
+    display: block;
+    margin-bottom: 1rem;
+    animation: roseIn 1s ease 0.8s both, floatRose 4s ease-in-out 2s infinite;
+    filter: drop-shadow(0 0 25px rgba(200,16,46,0.7));
+  }
+
+  @keyframes roseIn {
+    from { transform: scale(0) rotate(-180deg); opacity: 0; }
+    to   { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+
+  @keyframes floatRose {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50%       { transform: translateY(-8px) scale(1.05); }
+  }
+
+  .reveal-day {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 1.2s forwards;
+  }
+
+  .reveal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem, 6vw, 2.4rem);
+    color: var(--cream);
+    font-style: italic;
+    line-height: 1.3;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 1.5s forwards;
+  }
+
+  .reveal-title span {
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  .divider {
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 0 auto 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 1.8s forwards;
+  }
+
+  .reveal-msg {
+    font-size: clamp(1rem, 3.5vw, 1.18rem);
+    color: var(--blush);
+    line-height: 1.85;
+    font-style: italic;
+    font-weight: 300;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 2s forwards;
+    max-width: 360px;
+  }
+
+  .reveal-sig {
+    margin-top: 1.8rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--gold);
+    opacity: 0;
+    animation: fadeUp 0.8s ease 2.4s forwards;
+    font-style: italic;
+  }
+
+  .music-note {
+    margin-top: 1.5rem;
+    font-size: 0.75rem;
+    color: rgba(245,198,203,0.5);
+    letter-spacing: 0.1em;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 2.8s forwards;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Glow orbs */
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 1;
+    animation: orbFloat ease-in-out infinite;
+  }
+
+  @keyframes orbFloat {
+    0%, 100% { transform: translate(0, 0); }
+    33%       { transform: translate(30px, -20px); }
+    66%       { transform: translate(-20px, 15px); }
+  }
+</style>
+</head>
+<body>
+
+<!-- Background stars -->
+<div class="stars" id="stars"></div>
+
+<!-- Ambient orbs -->
+<div class="orb" style="width:350px;height:350px;background:rgba(200,16,46,0.12);top:-100px;left:-100px;animation-duration:12s;"></div>
+<div class="orb" style="width:250px;height:250px;background:rgba(212,168,83,0.08);bottom:-80px;right:-80px;animation-duration:9s;"></div>
+
+<div class="card">
+  <!-- INTRO STATE -->
+  <div class="intro" id="intro">
+    <p class="date-label">8 de Marzo · 2026</p>
+    <span class="gift-icon">🎁</span>
+    <h1 class="intro-title">Daniela, hay algo esperándote...</h1>
+    <p class="intro-sub">Un pequeño regalo para ti, hoy y siempre.</p>
+    <button class="btn" onclick="openGift()">✨ Abrir mi regalo ✨</button>
+  </div>
+
+  <!-- REVEAL STATE -->
+  <div class="reveal" id="reveal">
+    <span class="rose-big">🌹</span>
+    <p class="reveal-day">Feliz Día Internacional de la Mujer</p>
+    <h2 class="reveal-title">Daniela, eres la mujer<br>más <span>increíble</span> de mi mundo</h2>
+    <div class="divider"></div>
+    <p class="reveal-msg">
+      Hoy el mundo te celebra, pero yo te celebro cada día.<br><br>
+      Gracias por tu fuerza, tu ternura, tu manera única de iluminar todo lo que tocas.<br><br>
+      Te admiro. Te quiero. Eres todo.
+    </p>
+    <p class="reveal-sig">— Con todo mi amor 💛</p>
+    <p class="music-note">♫ Morat · Acuérdate de Mí ♫</p>
+  </div>
+</div>
+
+<script>
+// Generate stars
+const starsEl = document.getElementById('stars');
+for (let i = 0; i < 80; i++) {
+  const s = document.createElement('div');
+  s.className = 'star';
+  const size = Math.random() * 2.5 + 0.5;
+  s.style.cssText = `
+    width:${size}px; height:${size}px;
+    top:${Math.random()*100}vh; left:${Math.random()*100}vw;
+    animation-duration:${2+Math.random()*4}s;
+    animation-delay:${Math.random()*5}s;
+  `;
+  starsEl.appendChild(s);
+}
+
+// Petals
+const petalEmojis = ['🌸','🌹','🌺','🌷','✨','💕','🌸','🌹'];
+
+function spawnPetal() {
+  const p = document.createElement('div');
+  p.className = 'petal';
+  p.textContent = petalEmojis[Math.floor(Math.random() * petalEmojis.length)];
+  p.style.left = Math.random() * 100 + 'vw';
+  p.style.fontSize = (1 + Math.random() * 1.5) + 'rem';
+  const dur = 3 + Math.random() * 4;
+  p.style.animationDuration = dur + 's';
+  p.style.animationDelay = Math.random() * 0.5 + 's';
+  document.body.appendChild(p);
+  setTimeout(() => p.remove(), (dur + 1) * 1000);
+}
+
+// Audio setup using GitHub raw file
+function playMelody() {
+  const existing = document.getElementById('bg-audio');
+  if (existing) { existing.play(); return; }
+
+  const audio = document.createElement('audio');
+  audio.id = 'bg-audio';
+  audio.src = 'https://raw.githubusercontent.com/suclove/amor/main/love.mp3';
+  audio.loop = true;
+  audio.volume = 0.7;
+  document.body.appendChild(audio);
+  audio.play().catch(() => {});
+}
+
+// Main interaction
+let petalsInterval = null;
+
+function openGift() {
+  // Hide intro
+  document.getElementById('intro').classList.add('hide');
+  // Show reveal
+  setTimeout(() => document.getElementById('reveal').classList.add('show'), 400);
+
+  // Start petals
+  petalsInterval = setInterval(spawnPetal, 220);
+  setTimeout(() => {
+    clearInterval(petalsInterval);
+    petalsInterval = setInterval(spawnPetal, 600);
+  }, 4000);
+
+  // Play music
+  try { playMelody(); } catch(e) {}
+
+  // Haptic feedback (mobile)
+  if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+}
+</script>
+</body>
+</html>
